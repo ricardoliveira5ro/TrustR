@@ -1,29 +1,45 @@
 package com.example.trustR.event;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Entity
+@Table(name = "T_EVENT")
 public class Event {
 
-    private String id;
-    private String actorId;
-    private EventType eventType;
-    private String payload;
-    private LocalDateTime timestamp;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "event_id")
+    private UUID eventId;
 
-    public Event(String id, String actorId, EventType eventType, String payload, LocalDateTime timestamp) {
-        this.id = id;
+    @Column(name = "actor_id", nullable = false)
+    private String actorId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "event_type", nullable = false)
+    private EventType eventType;
+
+    @Column(name = "metadata", columnDefinition = "TEXT", nullable = false)
+    private String metadata;
+
+    @Column(name= "occurred_at", nullable = false)
+    private LocalDateTime occurredAt;
+
+    public Event(String actorId, EventType eventType, String metadata, LocalDateTime occurredAt) {
         this.actorId = actorId;
         this.eventType = eventType;
-        this.payload = payload;
-        this.timestamp = timestamp;
+        this.metadata = metadata;
+        this.occurredAt = occurredAt;
     }
 
-    public String getId() {
-        return id;
+    public UUID getEventId() {
+        return eventId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setEventId(UUID eventId) {
+        this.eventId = eventId;
     }
 
     public String getActorId() {
@@ -42,19 +58,19 @@ public class Event {
         this.eventType = eventType;
     }
 
-    public String getPayload() {
-        return payload;
+    public String getMetadata() {
+        return metadata;
     }
 
-    public void setPayload(String payload) {
-        this.payload = payload;
+    public void setMetadata(String metadata) {
+        this.metadata = metadata;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getOccurredAt() {
+        return occurredAt;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setOccurredAt(LocalDateTime occurredAt) {
+        this.occurredAt = occurredAt;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.trustR.api;
 
 import com.example.trustR.api.dto.EventDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,8 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController("/api")
 public class EventController {
 
+    private EventService eventService;
+
+    @Autowired
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
+
     @PostMapping("/events")
     public ResponseEntity<String> processEvents(@RequestBody EventDTO event) {
+        eventService.processEvent(event);
+
         return new ResponseEntity<>("Event Processed", HttpStatus.CREATED);
     }
 }
