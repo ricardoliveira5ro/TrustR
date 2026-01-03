@@ -7,3 +7,6 @@ spring:
     password: ${DB_PASSWORD}
     hikari:
       minimum-idle: 2
+  jpa:
+    hibernate:
+      ddl-auto: update

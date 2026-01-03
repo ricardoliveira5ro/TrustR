@@ -18,6 +18,11 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
+    @Autowired
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
     public void processEvent(EventDTO eventDTO) {
         Event event = new Event(
                 eventDTO.getActorId(),
