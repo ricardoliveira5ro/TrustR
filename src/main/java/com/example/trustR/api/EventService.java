@@ -25,10 +25,9 @@ public class EventService {
 
     public void processEvent(EventDTO eventDTO) {
         Event event = new Event(
-                eventDTO.getActorId(),
-                EventType.valueOf(eventDTO.getEventType()),
-                objectMapper.writeValueAsString(eventDTO.getMetadata()),
-                eventDTO.getOccurredAt()
+            eventDTO.getActorId(),
+            EventType.valueOf(eventDTO.getEventType()),
+            objectMapper.writeValueAsString(eventDTO.getMetadata())
         );
 
         eventRepository.saveEvent(event);

@@ -3,6 +3,7 @@ package com.example.trustR.event;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Entity
@@ -24,14 +25,13 @@ public class Event {
     @Column(name = "metadata", columnDefinition = "TEXT", nullable = false)
     private String metadata;
 
-    @Column(name= "occurred_at", nullable = false)
-    private LocalDateTime occurredAt;
+    @Column(name= "occurred_at")
+    private LocalDateTime occurredAt = LocalDateTime.now(ZoneOffset.UTC);
 
-    public Event(String actorId, EventType eventType, String metadata, LocalDateTime occurredAt) {
+    public Event(String actorId, EventType eventType, String metadata) {
         this.actorId = actorId;
         this.eventType = eventType;
         this.metadata = metadata;
-        this.occurredAt = occurredAt;
     }
 
     public UUID getEventId() {
