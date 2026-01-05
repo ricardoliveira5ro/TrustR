@@ -3,12 +3,16 @@ package com.example.trustR.api;
 import com.example.trustR.api.dto.EventDTO;
 import com.example.trustR.event.Event;
 import com.example.trustR.event.EventType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
 @Service
 public class EventService {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
 
     private EventRepository eventRepository;
     private ObjectMapper objectMapper;
@@ -24,6 +28,8 @@ public class EventService {
     }
 
     public void processEvent(EventDTO eventDTO) {
+        LOGGER.info("Processing Event");
+
         Event event = new Event(
             eventDTO.getActorId(),
             EventType.valueOf(eventDTO.getEventType()),
