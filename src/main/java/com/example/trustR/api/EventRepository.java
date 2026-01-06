@@ -1,6 +1,6 @@
 package com.example.trustR.api;
 
-import com.example.trustR.event.Event;
+import com.example.trustR.model.Event;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.slf4j.Logger;

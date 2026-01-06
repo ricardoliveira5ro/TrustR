@@ -1,8 +1,8 @@
 package com.example.trustR.api;
 
 import com.example.trustR.api.dto.EventDTO;
-import com.example.trustR.event.Event;
-import com.example.trustR.event.EventType;
+import com.example.trustR.model.Event;
+import com.example.trustR.model.EventType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
