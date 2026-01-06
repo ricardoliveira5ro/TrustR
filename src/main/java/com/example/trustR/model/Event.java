@@ -1,4 +1,4 @@
-package com.example.trustR.event;
+package com.example.trustR.model;
 
 import jakarta.persistence.*;
 
