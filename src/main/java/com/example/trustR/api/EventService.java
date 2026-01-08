@@ -3,6 +3,7 @@ package com.example.trustR.api;
 import com.example.trustR.api.dto.EventDTO;
 import com.example.trustR.model.Event;
 import com.example.trustR.model.EventType;
+import com.example.trustR.signals.SignalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ public class EventService {
     private final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
 
     private EventRepository eventRepository;
+    private SignalService signalService;
     private ObjectMapper objectMapper;
 
     @Autowired
@@ -27,6 +29,11 @@ public class EventService {
         this.objectMapper = objectMapper;
     }
 
+    @Autowired
+    public void setSignalService(SignalService signalService) {
+        this.signalService = signalService;
+    }
+
     public void processEvent(EventDTO eventDTO) {
         LOGGER.info("Processing Event");
 
@@ -37,5 +44,7 @@ public class EventService {
         );
 
         eventRepository.saveEvent(event);
+
+        signalService.generateSignals();
     }
 }
