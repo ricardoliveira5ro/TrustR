@@ -45,6 +45,6 @@ public class EventService {
 
         eventRepository.saveEvent(event);
 
-        signalService.generateSignals();
+        signalService.generateSignals(event);
     }
 }

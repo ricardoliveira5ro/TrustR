@@ -1,6 +1,10 @@
 package com.example.trustR.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -24,20 +28,29 @@ public class Signal {
     @Column(name = "value_boolean")
     private boolean valueBoolean;
 
-    public Signal(UUID signalId, String actorId, SignalType signalType) {
-        this.signalId = signalId;
+    @CreationTimestamp
+    @Column(name = "CREATED_AT", updatable = false)
+    private LocalDateTime createdAt;
+
+    protected Signal() {}
+
+    private Signal(String actorId, SignalType signalType) {
         this.actorId = actorId;
         this.signalType = signalType;
     }
 
-    public Signal(UUID signalId, String actorId, SignalType signalType, Double valueNumber) {
-        this(signalId, actorId, signalType);
-        this.valueNumber = valueNumber;
+    public static Signal booleanSignal(String actorId, SignalType type, boolean value) {
+        Signal signal = new Signal(actorId, type);
+        signal.valueBoolean = value;
+
+        return signal;
     }
 
-    public Signal(UUID signalId, String actorId, SignalType signalType, boolean valueBoolean) {
-        this(signalId, actorId, signalType);
-        this.valueBoolean = valueBoolean;
+    public static Signal numericSignal(String actorId, SignalType type, Double value) {
+        Signal signal = new Signal(actorId, type);
+        signal.valueNumber = value;
+
+        return signal;
     }
 
     public UUID getSignalId() {
