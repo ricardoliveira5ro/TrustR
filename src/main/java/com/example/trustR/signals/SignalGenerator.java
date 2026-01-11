@@ -11,9 +11,16 @@ import java.util.List;
 @Component
 public class SignalGenerator {
 
-    public List<Signal> generateSignals(Event currentEvent) {
+    public List<Signal> generateSignals(Event currentEvent, List<Event> events) {
         List<Signal> signals = new ArrayList<>();
 
+        generateInstantSignal(signals, currentEvent);
+        generateAggregatedSignals(signals, events);
+
+        return signals;
+    }
+
+    private void generateInstantSignal(List<Signal> signals, Event currentEvent) {
         switch (currentEvent.getEventType()) {
             case ACTION_FAILED -> signals.add(Signal.booleanSignal(currentEvent.getActorId(), SignalType.FAILED_ACTION_ATTEMPT, true));
             case ACTION_SUCCEEDED -> signals.add(Signal.booleanSignal(currentEvent.getActorId(), SignalType.SUCCESSFUL_ACTION, true));
@@ -22,7 +29,9 @@ public class SignalGenerator {
             case MANUAL_REVIEW -> signals.add(Signal.booleanSignal(currentEvent.getActorId(), SignalType.MANUAL_REVIEW_TRIGGERED, true));
             case ACCOUNT_VERIFIED -> signals.add(Signal.booleanSignal(currentEvent.getActorId(), SignalType.ACCOUNT_VERIFIED_STATUS, true));
         }
+    }
 
-        return signals;
+    private void generateAggregatedSignals(List<Signal> signals, List<Event> events) {
+
     }
 }

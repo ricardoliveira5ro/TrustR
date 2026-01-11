@@ -1,5 +1,6 @@
 package com.example.trustR.signals;
 
+import com.example.trustR.api.EventRepository;
 import com.example.trustR.model.Event;
 import com.example.trustR.model.Signal;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ public class SignalService {
 
     private SignalGenerator signalGenerator;
     private SignalRepository signalRepository;
+    private EventRepository eventRepository;
 
     @Autowired
     public void setSignalGenerator(SignalGenerator signalGenerator) {
@@ -27,11 +29,17 @@ public class SignalService {
         this.signalRepository = signalRepository;
     }
 
+    @Autowired
+    public void setEventRepository(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
+
     public void generateSignals(Event currentEvent) {
         LOGGER.info("Generating Signals");
 
-        // SignalEngine to generate signals based on event
-        List<Signal> signals = signalGenerator.generateSignals(currentEvent);
+        List<Event> pastEvents = eventRepository.getLastDayEventsByActorId(currentEvent.getEventId(), currentEvent.getActorId(), currentEvent.getOccurredAt());
+
+        List<Signal> signals = signalGenerator.generateSignals(currentEvent, pastEvents);
         signals.forEach(s -> signalRepository.saveSignal(s));
     }
 }
