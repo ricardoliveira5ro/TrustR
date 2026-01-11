@@ -26,7 +26,7 @@ public class Signal {
     private Double valueNumber;
 
     @Column(name = "value_boolean")
-    private boolean valueBoolean;
+    private Boolean valueBoolean;
 
     @CreationTimestamp
     @Column(name = "CREATED_AT", updatable = false)
@@ -39,7 +39,7 @@ public class Signal {
         this.signalType = signalType;
     }
 
-    public static Signal booleanSignal(String actorId, SignalType type, boolean value) {
+    public static Signal booleanSignal(String actorId, SignalType type, Boolean value) {
         Signal signal = new Signal(actorId, type);
         signal.valueBoolean = value;
 
@@ -85,11 +85,11 @@ public class Signal {
         this.valueNumber = valueNumber;
     }
 
-    public boolean isValueBoolean() {
+    public Boolean isValueBoolean() {
         return valueBoolean;
     }
 
-    public void setValueBoolean(boolean valueBoolean) {
+    public void setValueBoolean(Boolean valueBoolean) {
         this.valueBoolean = valueBoolean;
     }
 }
