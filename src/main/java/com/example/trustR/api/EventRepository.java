@@ -31,12 +31,10 @@ public class EventRepository {
     public List<Event> getLastDayEventsByActorId(UUID eventId, String actorId, LocalDateTime eventDate) {
         String sql = "SELECT e FROM Event e WHERE e.actorId = :actorId AND " +
                 "e.occurredAt >= :lastDay AND " +
-                "e.eventId <> :eventId " +
                 "ORDER BY e.occurredAt DESC";
 
         Query query = entityManager.createQuery(sql, Event.class)
                                     .setParameter("actorId", actorId)
-                                    .setParameter("eventId", eventId)
                                     .setParameter("lastDay", eventDate.minusDays(1));
 
         return query.getResultList();
