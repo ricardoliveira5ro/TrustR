@@ -53,11 +53,12 @@ public class SignalGenerator {
         signals.add(Signal.booleanSignal(currentEvent.getActorId(), SignalType.SUCCESSFUL_ACTION, true));
 
         // Time Window Signals
-        var actionFilteredEvents = events.stream().filter(e -> e.getEventType() == EventType.ACTION_SUCCEEDED || e.getEventType() == EventType.ACTION_FAILED).toList();
-        int actionsCount = actionFilteredEvents.size();
+        Predicate<Event> filterActions5Min = e -> (e.getEventType() == EventType.ACTION_SUCCEEDED || e.getEventType() == EventType.ACTION_FAILED) &&
+                                                            e.getOccurredAt().isAfter(currentEvent.getOccurredAt().minusMinutes(5));
 
-        Predicate<Event> filterActionsSucceeded5Min = e -> e.getEventType() == EventType.ACTION_SUCCEEDED && e.getOccurredAt().isAfter(currentEvent.getOccurredAt().minusMinutes(5));
-        long successfulActions5MinCount = actionFilteredEvents.stream().filter(filterActionsSucceeded5Min).count();
+        var actionFilteredEvents = events.stream().filter(filterActions5Min).toList();
+        int actionsCount = actionFilteredEvents.size();
+        long successfulActions5MinCount = actionFilteredEvents.stream().filter(e -> e.getEventType() == EventType.ACTION_SUCCEEDED).count();
 
         signals.add(Signal.numericSignal(currentEvent.getActorId(), SignalType.SUCCESS_RATE_5_MIN, (double) (successfulActions5MinCount / actionsCount)));
     }
