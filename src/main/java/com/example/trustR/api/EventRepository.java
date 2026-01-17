@@ -28,7 +28,7 @@ public class EventRepository {
         LOGGER.info("Event {} processed", event.getEventId());
     }
 
-    public List<Event> getLastDayEventsByActorId(UUID eventId, String actorId, LocalDateTime eventDate) {
+    public List<Event> getLastDayEventsByActorId(String actorId, LocalDateTime eventDate) {
         String sql = "SELECT e FROM Event e WHERE e.actorId = :actorId AND " +
                 "e.occurredAt >= :lastDay AND " +
                 "ORDER BY e.occurredAt DESC";
