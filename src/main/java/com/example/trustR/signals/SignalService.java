@@ -37,7 +37,7 @@ public class SignalService {
     public void generateSignals(Event currentEvent) {
         LOGGER.info("Generating Signals");
 
-        List<Event> pastEvents = eventRepository.getLastDayEventsByActorId(currentEvent.getEventId(), currentEvent.getActorId(), currentEvent.getOccurredAt());
+        List<Event> pastEvents = eventRepository.getLastDayEventsByActorId(currentEvent.getActorId(), currentEvent.getOccurredAt());
 
         List<Signal> signals = signalGenerator.generateSignals(currentEvent, pastEvents);
         signals.forEach(s -> signalRepository.saveSignal(s));

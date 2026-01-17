@@ -13,27 +13,24 @@ import java.util.function.Predicate;
 @Component
 public class SignalGenerator {
 
-    private List<Signal> signals;
-
     public List<Signal> generateSignals(Event currentEvent, List<Event> events) {
-        // Reset list
-        signals = new ArrayList<>();
+        List<Signal> signals = new ArrayList<>();
 
-        mapEventSignal(currentEvent, events);
+        mapEventSignal(currentEvent, events, signals);
 
         return signals;
     }
 
-    private void mapEventSignal(Event currentEvent, List<Event> events) {
+    private void mapEventSignal(Event currentEvent, List<Event> events, List<Signal> signals) {
         switch (currentEvent.getEventType()) {
-            case ACTION_FAILED -> generateFailedActionSignal(currentEvent, events);
-            case ACTION_SUCCEEDED -> generateSuccessRateSignal(currentEvent, events);
-            case RATE_LIMIT_EXCEEDED -> generateRateLimitHitsSignal(currentEvent, events);
-            case POLICY_VIOLATION -> generatePolicyViolationSignal(currentEvent, events);
+            case ACTION_FAILED -> generateFailedActionSignal(currentEvent, events, signals);
+            case ACTION_SUCCEEDED -> generateSuccessRateSignal(currentEvent, events, signals);
+            case RATE_LIMIT_EXCEEDED -> generateRateLimitHitsSignal(currentEvent, events, signals);
+            case POLICY_VIOLATION -> generatePolicyViolationSignal(currentEvent, events, signals);
         }
     }
 
-    private void generateFailedActionSignal(Event currentEvent, List<Event> events) {
+    private void generateFailedActionSignal(Event currentEvent, List<Event> events, List<Signal> signals) {
         // Instant Signal
         signals.add(Signal.booleanSignal(currentEvent.getActorId(), SignalType.FAILED_ACTION_ATTEMPT, true));
 
@@ -48,7 +45,7 @@ public class SignalGenerator {
         signals.add(Signal.numericSignal(currentEvent.getActorId(), SignalType.FAILED_ACTION_ATTEMPTS_1_HOUR, (double) failedActions1HrCount));
     }
 
-    private void generateSuccessRateSignal(Event currentEvent, List<Event> events) {
+    private void generateSuccessRateSignal(Event currentEvent, List<Event> events, List<Signal> signals) {
         // Instant Signal
         signals.add(Signal.booleanSignal(currentEvent.getActorId(), SignalType.SUCCESSFUL_ACTION, true));
 
@@ -63,7 +60,7 @@ public class SignalGenerator {
         signals.add(Signal.numericSignal(currentEvent.getActorId(), SignalType.SUCCESS_RATE_5_MIN, (double) (successfulActions5MinCount / actionsCount)));
     }
 
-    private void generateRateLimitHitsSignal(Event currentEvent, List<Event> events) {
+    private void generateRateLimitHitsSignal(Event currentEvent, List<Event> events, List<Signal> signals) {
         // Instant Signal
         signals.add(Signal.booleanSignal(currentEvent.getActorId(), SignalType.RATE_LIMIT_HIT, true));
 
@@ -74,7 +71,7 @@ public class SignalGenerator {
         signals.add(Signal.numericSignal(currentEvent.getActorId(), SignalType.RATE_LIMIT_HITS_10_MIN, (double) rateHits10MinCount));
     }
 
-    private void generatePolicyViolationSignal(Event currentEvent, List<Event> events) {
+    private void generatePolicyViolationSignal(Event currentEvent, List<Event> events, List<Signal> signals) {
         // Instant Signal
         signals.add(Signal.booleanSignal(currentEvent.getActorId(), SignalType.POLICY_VIOLATION_REPORTED, true));
 
