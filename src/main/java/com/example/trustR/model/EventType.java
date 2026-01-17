@@ -1,13 +1,9 @@
 package com.example.trustR.model;
 
 public enum EventType {
-    ACTION_ATTEMPTED,
     ACTION_SUCCEEDED,
     ACTION_FAILED,
     RATE_LIMIT_EXCEEDED,
     POLICY_VIOLATION,
-    MANUAL_REVIEW,
-    ACCOUNT_CREATED,
-    ACCOUNT_VERIFIED,
     UNKNOWN
 }
